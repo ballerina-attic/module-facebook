@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# FacebookConfiguration is used to set up the Facebook configuration. In order to use this connector, you need
+# FacebookConfiguration is used to set up the Facebook configuration. In order to use this Connector, you need
 # to provide the valid access token.
 # + clientConfig - The HTTP client congiguration
 public type FacebookConfiguration record {
@@ -23,7 +23,7 @@ public type FacebookConfiguration record {
 
 # Facebook Endpoint object.
 # + facebookConfig - Facebook client endpoint configuration object
-# + facebookConnector - Facebook connector object
+# + facebookConnector - Facebook Connector object
 public type Client object {
 
     public FacebookConfiguration facebookConfig = {};
@@ -33,12 +33,12 @@ public type Client object {
     # + config - Facebook client endpoint configuration object
     public function init(FacebookConfiguration config);
 
-    # Get Facebook connector client.
-    # + return - Facebook connector client
+    # Get Facebook Connector client.
+    # + return - Facebook Connector client
     public function getCallerActions() returns FacebookConnector;
 };
 
-# Facebook client connector.
+# Facebook Client Connector.
 # + httpClient - The HTTP Client
 public type FacebookConnector object {
 
@@ -62,7 +62,7 @@ public type FacebookConnector object {
     # + return - True on success and FacebookError on failure
     public function deletePost(string postId) returns (boolean)|FacebookError;
 
-    # Get the User's friends who have installed the app making the query
+    # Get the User's friends who have installed the app making the query.
     # Get the User's total number of friends (including those who have not installed the app making the query).
     # + userId - The user ID
     # + return - FriendList object on success and FacebookError on failure
