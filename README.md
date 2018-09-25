@@ -1,4 +1,4 @@
-Connects to Facebook from Ballerina.
+[![Build Status](https://travis-ci.org/wso2-ballerina/package-facebook.svg?branch=master)](https://travis-ci.org/wso2-ballerina/package-facebook)
 
 # Ballerina Facebook Connector
 
