@@ -12,7 +12,7 @@ The `wso2/facebook` package contains operations to create post, retrieve post, d
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.981.0                      |
+|  Ballerina Language             |   0.982.0                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
