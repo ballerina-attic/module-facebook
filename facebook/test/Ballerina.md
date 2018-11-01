@@ -6,17 +6,17 @@ The Facebook connector allows you to create post, retrieve post, delete post, ge
 
 | Ballerina Language Version  | Facebook API Version |
 | ----------------------------| ---------------------|
-|  0.982.0                    |   v3.1               |
+|  0.983.0                    |   v3.1               |
 
 
 ## Running Samples
 You can use the `tests.bal` file to test all the connector actions by following the below steps:
-1. Navigate to package-facebook and initialize the ballerina project
+1. Navigate to module-facebook and initialize the ballerina project
     ```
     ballerina init
     ```
 
-2. Obtain the access token and add that value in the package-facebook/ballerina.conf file.
+2. Obtain the access token and add that value in the module-facebook/ballerina.conf file.
     ```
     ACCESS_TOKEN="your_access_token"
     ```

@@ -23,6 +23,7 @@ string accessToken = config:getAsString("ACCESS_TOKEN");
 endpoint Client client {
     clientConfig:{
         auth:{
+            scheme: http:OAUTH2,
             accessToken:accessToken
         }
     }
@@ -65,6 +66,7 @@ function testCreatePost() {
     endpoint Client facebookClient {
         clientConfig:{
             auth:{
+                scheme: http:OAUTH2,
                 accessToken:pageToken
             }
         }
@@ -85,6 +87,7 @@ function testRetrievePost() {
     endpoint Client facebookClient {
         clientConfig:{
             auth:{
+                scheme: http:OAUTH2,
                 accessToken:pageToken
             }
         }
@@ -104,6 +107,7 @@ function testDeletePost() {
     endpoint Client facebookClient {
         clientConfig:{
             auth:{
+                scheme: http:OAUTH2,
                 accessToken:pageToken
             }
         }
