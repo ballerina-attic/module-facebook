@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/wso2-ballerina/package-facebook.svg?branch=master)](https://travis-ci.org/wso2-ballerina/package-facebook)
+[![Build Status](https://travis-ci.org/wso2-ballerina/module-facebook.svg?branch=master)](https://travis-ci.org/wso2-ballerina/module-facebook)
 
 # Ballerina Facebook Connector
 
@@ -6,18 +6,18 @@ The Facebook connector allows you to create post, retrieve post, delete post, ge
 
 **Post Operations**
 
-The `wso2/facebook` package contains operations to create post, retrieve post, delete post, get friend list and get page access tokens.
+The `wso2/facebook` module contains operations to create post, retrieve post, delete post, get friend list and get page access tokens.
 
 ## Compatibility
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.982.0                      |
+|  Ballerina Language             |   0.983.0                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
 
-First, import the `wso2/facebook` package into the Ballerina project.
+First, import the `wso2/facebook` module into the Ballerina project.
 
 ```ballerina
 import wso2/facebook;

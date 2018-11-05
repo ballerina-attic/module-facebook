@@ -1,22 +1,22 @@
 Connects to Facebook from Ballerina.
 
-# Package Overview
+# Module Overview
 The Facebook connector allows you to create post, retrieve post, delete post, get friend list and get page access tokens through the Facebook Graph API. It handles OAuth 2.0 authentication.
 
 **Post Operations**
 
-The `wso2/facebook` package contains operations to create post, retrieve post, delete post, get friend list and get page access tokens.
+The `wso2/facebook` module contains operations to create post, retrieve post, delete post, get friend list and get page access tokens.
 
 ## Compatibility
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.982.0                      |
+|  Ballerina Language             |   0.983.0                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
 
-First, import the `wso2/facebook` package into the Ballerina project.
+First, import the `wso2/facebook` module into the Ballerina project.
 
 ```ballerina
 import wso2/facebook;
