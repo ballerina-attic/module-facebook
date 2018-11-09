@@ -49,44 +49,34 @@ public type FacebookConnector object {
     # + msg - The main body of the post
     # + link - The URL of a link to attach to the post
     # + place - Page ID of a location associated with this post
-    # + return - Post object on success and FacebookError on failure
-    public function createPost(string id, string msg, string link, string place) returns Post|FacebookError;
+    # + return - Post object on success and error on failure
+    public function createPost(string id, string msg, string link, string place) returns Post|error;
 
     # Retrieve a post.
     # + postId - The post ID
-    # + return - Post object on success and FacebookError on failure
-    public function retrievePost(string postId) returns Post|FacebookError;
+    # + return - Post object on success and error on failure
+    public function retrievePost(string postId) returns Post|error;
 
     # Delete a post.
     # + postId - The post ID
-    # + return - True on success and FacebookError on failure
-    public function deletePost(string postId) returns (boolean)|FacebookError;
+    # + return - True on success and error on failure
+    public function deletePost(string postId) returns (boolean)|error;
 
     # Get the User's friends who have installed the app making the query.
     # Get the User's total number of friends (including those who have not installed the app making the query).
     # + userId - The user ID
-    # + return - FriendList object on success and FacebookError on failure
-    public function getFriendListDetails(string userId) returns FriendList|FacebookError;
+    # + return - FriendList object on success and error on failure
+    public function getFriendListDetails(string userId) returns FriendList|error;
 
     # Get a list of all the Pages managed by that User, as well as a Page access tokens for each Page.
     # + userId - The user ID
-    # + return - AccessTokens object on success and FacebookError on failure
-    public function getPageAccessTokens(string userId) returns AccessTokens|FacebookError;
+    # + return - AccessTokens object on success and error on failure
+    public function getPageAccessTokens(string userId) returns AccessTokens|error;
 
     # Retrieve details of the event.
     # + eventId - The event ID
-    # + return - `Event` object on success or `FacebookError` on failure
-    public function retrieveEventDetails(string eventId) returns Event|FacebookError;
-};
-
-# Facebook error.
-# + message - Error message
-# + cause - The error which caused the Facebook error
-# + statusCode - The status code
-public type FacebookError record {
-    string message;
-    error? cause;
-    int statusCode;
+    # + return - `Event` object on success or `error` on failure
+    public function retrieveEventDetails(string eventId) returns Event|error;
 };
 
 # Post object.

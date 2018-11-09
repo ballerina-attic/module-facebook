@@ -67,49 +67,49 @@ The `createPost` function creates a post for a user, page, event, or group.
 var response = facebookEP->createPost(id,message,link,place);
 ```
 
-The response from `createPost` is a `Post` object if the request was successful or a `FacebookError` on failure. The `match` operation can be used to handle the response if an error occurs.
+The response from `createPost` is a `Post` object if the request was successful or a `error` on failure. The `match` operation can be used to handle the response if an error occurs.
 ```ballerina
 match response {
    //If successful, returns the Post object.
    facebook:Post fbRes => io:println(fbRes);
-   //Unsuccessful attempts return a FacebookError.
-   facebook:FacebookError err => io:println(err);
+   //Unsuccessful attempts return a error.
+   facebook:error err => io:println(err);
 }
 ```
 
-The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success and `FacebookError` on failure.
+The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success and `error` on failure.
 ```ballerina
 var fbRes = facebookEP.retrievePost(postId);
 match fbRes {
     facebook:Post p => io:println(p);
-    facebook:FacebookError e => io:println(e);
+    facebook:error e => io:println(e);
 }
 ```
 
-The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success and `FacebookError` on failure.
+The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success and `error` on failure.
 ```ballerina
 var fbRes = facebookEP.deletePost(postId);
 match fbRes {
     boolean b => io:println(b);
-    facebook:FacebookError e => io:println(e);
+    facebook:error e => io:println(e);
 }
 ```
 
-The `getFriendListDetails` function used to get the User's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns the `FriendList` object on success and `FacebookError` on failure.
+The `getFriendListDetails` function used to get the User's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns the `FriendList` object on success and `error` on failure.
 ```ballerina
 var fbRes = facebookEP.getFriendListDetails(userId);
 match fbRes {
     FriendList list => { friendList = list; io:println(friendList); }
-    FacebookError e => io:println(e);
+    error e => io:println(e);
 }
 ```
 
-The `getPageAccessTokens` function used to get the page access tokens. The `userId` represents the ID of the user. It returns the `AccessTokens` object on success and `FacebookError` on failure.
+The `getPageAccessTokens` function used to get the page access tokens. The `userId` represents the ID of the user. It returns the `AccessTokens` object on success and `error` on failure.
 ```ballerina
 var fbRes = facebookEP.getPageAccessTokens(userId);
 match fbRes {
     AccessTokens list => { accessTokenList = list; io:println(accessTokenList); }
-    FacebookError e => io:println(e);
+    error e => io:println(e);
 }
 ```
 
@@ -150,7 +150,7 @@ function callMethodsWithUserToken(string userAccessToken) returns string {
             io:println("Page token: ");
             io:println(pageToken);
         }
-        facebook:FacebookError e => io:println(e.message);
+        facebook:error e => io:println(e.message);
     }
 
     io:println("-----------------Calling to get friends list details------------------");
@@ -163,7 +163,7 @@ function callMethodsWithUserToken(string userAccessToken) returns string {
             io:println("Friends list count: ");
             io:println(list.summary.totalCount);
         }
-        facebook:FacebookError e => io:println(e.message);
+        facebook:error e => io:println(e.message);
     }
     return pageToken;
 }
@@ -185,7 +185,7 @@ function callMethodsWithPageToken(string pageAccessToken) {
             io:println("Post Id: ");
             io:println(postId);
         }
-        facebook:FacebookError e => io:println(e.message);
+        facebook:error e => io:println(e.message);
     }
 
     io:println("-----------------Calling to retrieve fb post------------------");
@@ -195,14 +195,14 @@ function callMethodsWithPageToken(string pageAccessToken) {
             io:println("Post Details: ");
             io:println(post);
         }
-        facebook:FacebookError e => io:println(e.message);
+        facebook:error e => io:println(e.message);
     }
 
     io:println("-----------------Calling to delete fb post------------------");
     var deleteResponse = client->deletePost(postId);
     match deleteResponse {
         boolean isDeleted => io:println(isDeleted);
-        facebook:FacebookError e => io:println(e.message);
+        facebook:error e => io:println(e.message);
     }
 }
 

@@ -38,7 +38,7 @@ function testGetPageAccessTokens() {
     var fbRes = client->getPageAccessTokens("me");
     match fbRes {
         AccessTokens list => accessTokenList = list;
-        FacebookError e => test:assertFail(msg = e.message);
+        error e => test:assertFail(msg = e.message);
     }
     pageToken = accessTokenList.data[0].pageAccessToken;
     test:assertNotEquals(accessTokenList.data, null, msg = "Failed to get page access tokens");
@@ -51,7 +51,7 @@ function testGetFriendListDetails() {
     var fbRes = client->getFriendListDetails("me");
     match fbRes {
         FriendList list => friendList = list;
-        FacebookError e => test:assertFail(msg = e.message);
+        error e => test:assertFail(msg = e.message);
     }
     test:assertNotEquals(friendList.data, null, msg = "Failed to get friend list");
     test:assertNotEquals(friendList.summary.totalCount, null, msg = "Failed to get friend list");
@@ -75,7 +75,7 @@ function testCreatePost() {
     var fbRes = facebookClient->createPost("me","testBalMeassage","","");
     match fbRes {
         Post post => facebookPost = post;
-        FacebookError e => test:assertFail(msg = e.message);
+        error e => test:assertFail(msg = e.message);
     }
     test:assertNotEquals(facebookPost.id, null, msg = "Failed to create post");
 }
@@ -96,7 +96,7 @@ function testRetrievePost() {
     var fbRes = facebookClient->retrievePost(facebookPost.id);
     match fbRes {
         Post post => test:assertNotEquals(post.id, null, msg = "Failed to retrieve the post");
-        FacebookError e => test:assertFail(msg = e.message);
+        error e => test:assertFail(msg = e.message);
     }
 }
 
@@ -116,7 +116,7 @@ function testDeletePost() {
     var fbRes = facebookClient->deletePost(facebookPost.id);
     match fbRes {
         boolean isDeleted => test:assertTrue(isDeleted, msg = "Failed to delete the post!");
-        FacebookError e => test:assertFail(msg = e.message);
+        error e => test:assertFail(msg = e.message);
     }
 }
 

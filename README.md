@@ -45,30 +45,30 @@ The `createPost` function creates a post for a user, page, event, or group.
 var response = facebookEP->createPost(id,message,link,place);
 ```
 
-The response from `createPost` is a `Post` object if the request was successful or a `FacebookError` on failure. The `match` operation can be used to handle the response if an error occurs.
+The response from `createPost` is a `Post` object if the request was successful or a `error` on failure. The `match` operation can be used to handle the response if an error occurs.
 ```ballerina
 match response {
    //If successful, returns the Post object.
    facebook:Post fbRes => io:println(fbRes);
-   //Unsuccessful attempts return a FacebookError.
-   facebook:FacebookError err => io:println(err);
+   //Unsuccessful attempts return a error.
+   facebook:error err => io:println(err);
 }
 ```
 
-The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success and `FacebookError` on failure.
+The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success and `error` on failure.
 ```ballerina
 var fbRes = facebookEP.retrievePost(postId);
 match fbRes {
     facebook:Post p => io:println(p);
-    facebook:FacebookError e => io:println(e);
+    facebook:error e => io:println(e);
 }
 ```
 
-The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success and `FacebookError` on failure.
+The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success and `error` on failure.
 ```ballerina
 var fbRes = facebookEP.deletePost(postId);
 match fbRes {
     boolean b => io:println(b);
-    facebook:FacebookError e => io:println(e);
+    facebook:error e => io:println(e);
 }
 ```
