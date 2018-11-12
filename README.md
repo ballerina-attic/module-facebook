@@ -51,7 +51,7 @@ match response {
    //If successful, returns the Post object.
    facebook:Post fbRes => io:println(fbRes);
    //Unsuccessful attempts return a error.
-   facebook:error err => io:println(err);
+   error err => io:println(err);
 }
 ```
 
@@ -60,7 +60,7 @@ The `retrievePost` function retrieves the post specified by the ID. The `postId`
 var fbRes = facebookEP.retrievePost(postId);
 match fbRes {
     facebook:Post p => io:println(p);
-    facebook:error e => io:println(e);
+    error e => io:println(e);
 }
 ```
 
@@ -69,6 +69,6 @@ The `deletePost` function deletes the post specified by the ID. The `postId` rep
 var fbRes = facebookEP.deletePost(postId);
 match fbRes {
     boolean b => io:println(b);
-    facebook:error e => io:println(e);
+    error e => io:println(e);
 }
 ```
