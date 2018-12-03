@@ -11,7 +11,7 @@ The `wso2/facebook` module contains operations to create post, retrieve post, de
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.983.0                      |
+|  Ballerina Language             |   0.985.0                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
@@ -41,9 +41,10 @@ Instantiate the connector by giving authentication details in the HTTP client co
 
     For this enter user token in the following HTTP client config to use `getPageAccessTokens(userId)`:
     ```ballerina
-    endpoint facebook:Client facebookEP {
+    facebook:Client facebookEP {
         clientConfig:{
             auth:{
+                scheme: http:OAUTH2,
                 accessToken:accessToken
             }
         }
@@ -52,9 +53,10 @@ Instantiate the connector by giving authentication details in the HTTP client co
 
 You can now enter page token to publish a post in a facebook page in the HTTP client config:
 ```ballerina
-endpoint facebook:Client facebookEP {
+facebook:Client facebookEP {
     clientConfig:{
         auth:{
+            scheme: http:OAUTH2,
             accessToken:accessToken
         }
     }
@@ -67,49 +69,59 @@ The `createPost` function creates a post for a user, page, event, or group.
 var response = facebookEP->createPost(id,message,link,place);
 ```
 
-The response from `createPost` is a `Post` object if the request was successful or a `error` on failure. The `match` operation can be used to handle the response if an error occurs.
+The response from `createPost` is a `Post` object if the request was successful or a `error` on failure. .
 ```ballerina
-match response {
+if (response is Post) {
    //If successful, returns the Post object.
-   facebook:Post fbRes => io:println(fbRes);
+   response = response;
+   io:println(fbRes);
+} else {
    //Unsuccessful attempts return a error.
-   error err => io:println(err);
+   io:println(response);
 }
 ```
 
 The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success and `error` on failure.
 ```ballerina
-var fbRes = facebookEP.retrievePost(postId);
-match fbRes {
-    facebook:Post p => io:println(p);
-    error e => io:println(e);
+var response = facebookEP.retrievePost(postId);
+if (response is Post) {
+    p = response;
+    io:println(p);
+} else {
+    io:println(response);
 }
 ```
 
 The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success and `error` on failure.
 ```ballerina
-var fbRes = facebookEP.deletePost(postId);
-match fbRes {
-    boolean b => io:println(b);
-    error e => io:println(e);
+var response = facebookEP.deletePost(postId);
+if (response is boolean) {
+    b = response;
+    io:println(b);
+} else {
+    io:println(response);
 }
 ```
 
 The `getFriendListDetails` function used to get the User's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns the `FriendList` object on success and `error` on failure.
 ```ballerina
-var fbRes = facebookEP.getFriendListDetails(userId);
-match fbRes {
-    FriendList list => { friendList = list; io:println(friendList); }
-    error e => io:println(e);
+var response = facebookEP.getFriendListDetails(userId);
+if (response is FriendList) {
+    friendList = response; 
+    io:println(friendList); 
+} else {
+     io:println(response);
 }
 ```
 
 The `getPageAccessTokens` function used to get the page access tokens. The `userId` represents the ID of the user. It returns the `AccessTokens` object on success and `error` on failure.
 ```ballerina
-var fbRes = facebookEP.getPageAccessTokens(userId);
-match fbRes {
-    AccessTokens list => { accessTokenList = list; io:println(accessTokenList); }
-    error e => io:println(e);
+var response = facebookEP.getPageAccessTokens(userId);
+if (response is AccessTokens) {
+    list = response; 
+    io:println(accessTokenList); 
+} else {
+    io:println(response);
 }
 ```
 
@@ -140,30 +152,28 @@ function callMethodsWithUserToken(string userAccessToken) returns string {
     //facebook:AccessTokens accessTokenList = {};
     string pageToken;
 
-    match tokenResponse {
-        facebook:AccessTokens list => {
-            pageToken = list.data[0].pageAccessToken;
+    if (tokenResponse is facebook:AccessTokens) {
+            pageToken = tokenResponse.data[0].pageAccessToken;
             io:println("Page token details: ");
-            io:println(list.data);
+            io:println(tokenResponse.data);
             io:println("Page Name: ");
-            io:println(list.data[0].pageName);
+            io:println(tokenResponse.data[0].pageName);
             io:println("Page token: ");
             io:println(pageToken);
-        }
-        error e => io:println(e.message);
+    } else {
+        io:println(tokenResponse.detail().message);
     }
 
     io:println("-----------------Calling to get friends list details------------------");
     //Get Friends list details
     var friendsResponse = client->getFriendListDetails("me");
-    match friendsResponse {
-        facebook:FriendList list => {
+    if (friendsResponse is facebook:FriendList) {
             io:println("Friends list: ");
-            io:println(list.data);
+            io:println(friendsResponse.data);
             io:println("Friends list count: ");
             io:println(list.summary.totalCount);
-        }
-        error e => io:println(e.message);
+    } else {
+        io:println(e.message);
     }
     return pageToken;
 }
@@ -179,30 +189,29 @@ function callMethodsWithPageToken(string pageAccessToken) {
     io:println("-----------------Calling to create fb post------------------");
     var createPostResponse = client->createPost("me","testBalMeassage","","");
     string postId;
-    match createPostResponse {
-        facebook:Post post => {
-            postId = post.id;
+    if (createPostResponse is facebook:Post) {
+            postId = createPostResponse.id;
             io:println("Post Id: ");
-            io:println(postId);
-        }
-        error e => io:println(e.message);
+            io:println(createPostResponse);
+    } else {
+       io:println(createPostResponse.detail().message);
     }
 
     io:println("-----------------Calling to retrieve fb post------------------");
     var retrievePostResponse = client->retrievePost(postId);
-    match retrievePostResponse {
-        facebook:Post post => {
+    if (retrievePostResponse is facebook:Post) {
             io:println("Post Details: ");
-            io:println(post);
-        }
-        error e => io:println(e.message);
+            io:println(retrievePostResponse);
+    } else {
+        io:println(retrievePostResponse.detail().message);
     }
 
     io:println("-----------------Calling to delete fb post------------------");
     var deleteResponse = client->deletePost(postId);
-    match deleteResponse {
-        boolean isDeleted => io:println(isDeleted);
-        error e => io:println(e.message);
+    if (deleteResponse is boolean) {
+        io:println(deleteResponse);
+    } else {
+        io:println(deleteResponse.detail().message);
     }
 }
 

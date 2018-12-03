@@ -15,23 +15,26 @@
 // under the License.
 
 //API urls
-@final string BASE_URL = "https://graph.facebook.com";
-@final string VERSION = "/v3.1";
-@final string FEED = "/feed";
-@final string FRIENDS = "/friends";
-@final string ACCOUNTS = "/accounts";
-@final string FIELDS = "?fields=from,created_time,is_published,message,updated_time,type";
-@final string VALUE_INPUT_OPTION = "valueInputOption=RAW";
-@final string BATCH_UPDATE_REQUEST = ":batchUpdate";
+final string BASE_URL = "https://graph.facebook.com";
+final string VERSION = "/v3.1";
+final string FEED = "/feed";
+final string FRIENDS = "/friends";
+final string ACCOUNTS = "/accounts";
+final string FIELDS = "?fields=from,created_time,is_published,message,updated_time,type";
+final string VALUE_INPUT_OPTION = "valueInputOption=RAW";
+final string BATCH_UPDATE_REQUEST = ":batchUpdate";
 
 //Symbols
-@final string QUESTION_MARK = "?";
-@final string PATH_SEPARATOR = "/";
-@final string EMPTY_STRING = "";
+final string QUESTION_MARK = "?";
+final string PATH_SEPARATOR = "/";
+final string EMPTY_STRING = "";
 
 //string constants
-@final string UTF_8 = "UTF-8";
-@final string FEED_PATH = "/feed";
-@final string MESSAGE = "&message=";
-@final string LINK = "&link=";
-@final string PLACE = "&place=";
+final string UTF_8 = "UTF-8";
+final string FEED_PATH = "/feed";
+final string MESSAGE = "&message=";
+final string LINK = "&link=";
+final string PLACE = "&place=";
+
+// Error Codes
+final string FACEBOOK_ERROR_CODE = "(wso2/facebook)FacebookError";

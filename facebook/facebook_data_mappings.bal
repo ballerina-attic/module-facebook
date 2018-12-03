@@ -31,7 +31,7 @@ function convertToPost(json jsonPost) returns Post {
 
 function convertToBoolean(json jsonVal) returns (boolean) {
     string stringVal = jsonVal.toString();
-    return <boolean>stringVal;
+    return boolean.create(stringVal);
 }
 
 function convertToFriendList(json jsonFriend) returns FriendList {

@@ -16,17 +16,72 @@
 
 import ballerina/http;
 
-function Client::init(FacebookConfiguration config) {
-    config.clientConfig.url = BASE_URL;
-    match config.clientConfig.auth {
-        () => {}
-        http:AuthConfig authConfig => {
-            authConfig.scheme = http:OAUTH2;
-        }
-    }
-    self.facebookConnector.httpClient.init(config.clientConfig);
-}
+# Facebook Client object.
+# + facebookConnector - FacebookConnector Connector object
+public type Client client object {
 
-function Client::getCallerActions() returns FacebookConnector {
-    return self.facebookConnector;
+    public FacebookConnector facebookConnector;
+
+    public function __init(FacebookConfiguration facebookconfig) {
+        self.init(facebookconfig);
+        self.facebookConnector = new(BASE_URL, facebookconfig);
+    }
+
+    # Initialize Facebook endpoint.
+    #
+    # + facebookconfig - Facebook configuraion
+    public function init(FacebookConfiguration facebookconfig);
+
+    # Create a new post.
+    # + id - The identifier
+    # + msg - The main body of the post
+    # + link - The URL of a link to attach to the post
+    # + place - Page ID of a location associated with this post
+    # + return - Post object on success and error on failure
+    remote function createPost(string id, string msg, string link, string place) returns Post|error {
+        return self.facebookConnector->createPost(id, msg, link, place);
+    }
+
+    # Retrieve a post.
+    # + postId - The post ID
+    # + return - Post object on success and error on failure
+    remote function retrievePost(string postId) returns Post|error {
+        return self.facebookConnector->retrievePost(postId);
+    }
+
+    # Delete a post.
+    # + postId - The post ID
+    # + return - True on success and error on failure
+    remote function deletePost(string postId) returns (boolean)|error {
+        return self.facebookConnector->deletePost(postId);
+    }
+
+    # Get the User's friends who have installed the app making the query.
+    # Get the User's total number of friends (including those who have not installed the app making the query).
+    # + userId - The user ID
+    # + return - FriendList object on success and error on failure
+    remote function getFriendListDetails(string userId) returns FriendList|error {
+        return self.facebookConnector->getFriendListDetails(userId);
+    }
+
+    # Get a list of all the Pages managed by that User, as well as a Page access tokens for each Page.
+    # + userId - The user ID
+    # + return - AccessTokens object on success and error on failure
+    remote function getPageAccessTokens(string userId) returns AccessTokens|error {
+        return self.facebookConnector->getPageAccessTokens(userId);
+    }
+
+    # Retrieve details of the event.
+    # + eventId - The event ID
+    # + return - `Event` object on success or `error` on failure
+    remote function retrieveEventDetails(string eventId) returns Event|error {
+        return self.facebookConnector->retrieveEventDetails(eventId);
+    }
+};
+
+function Client.init(FacebookConfiguration facebookconfig) {
+    http:AuthConfig? authConfig = facebookconfig.clientConfig.auth;
+    if (authConfig is http:AuthConfig) {
+        authConfig.scheme = http:OAUTH2;
+    }
 }

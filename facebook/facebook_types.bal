@@ -21,64 +21,6 @@ public type FacebookConfiguration record {
     http:ClientEndpointConfig clientConfig = {};
 };
 
-# Facebook Endpoint object.
-# + facebookConfig - Facebook client endpoint configuration object
-# + facebookConnector - Facebook Connector object
-public type Client object {
-
-    public FacebookConfiguration facebookConfig = {};
-    public FacebookConnector facebookConnector = new;
-
-    # Facebook endpoint initialization function.
-    # + config - Facebook client endpoint configuration object
-    public function init(FacebookConfiguration config);
-
-    # Get Facebook Connector client.
-    # + return - Facebook Connector client
-    public function getCallerActions() returns FacebookConnector;
-};
-
-# Facebook Client Connector.
-# + httpClient - The HTTP Client
-public type FacebookConnector object {
-
-    public http:Client httpClient = new;
-
-    # Create a new post.
-    # + id - The identifier
-    # + msg - The main body of the post
-    # + link - The URL of a link to attach to the post
-    # + place - Page ID of a location associated with this post
-    # + return - Post object on success and error on failure
-    public function createPost(string id, string msg, string link, string place) returns Post|error;
-
-    # Retrieve a post.
-    # + postId - The post ID
-    # + return - Post object on success and error on failure
-    public function retrievePost(string postId) returns Post|error;
-
-    # Delete a post.
-    # + postId - The post ID
-    # + return - True on success and error on failure
-    public function deletePost(string postId) returns (boolean)|error;
-
-    # Get the User's friends who have installed the app making the query.
-    # Get the User's total number of friends (including those who have not installed the app making the query).
-    # + userId - The user ID
-    # + return - FriendList object on success and error on failure
-    public function getFriendListDetails(string userId) returns FriendList|error;
-
-    # Get a list of all the Pages managed by that User, as well as a Page access tokens for each Page.
-    # + userId - The user ID
-    # + return - AccessTokens object on success and error on failure
-    public function getPageAccessTokens(string userId) returns AccessTokens|error;
-
-    # Retrieve details of the event.
-    # + eventId - The event ID
-    # + return - `Event` object on success or `error` on failure
-    public function retrieveEventDetails(string eventId) returns Event|error;
-};
-
 # Post object.
 # + id - The post ID
 # + message - The status message in the post
@@ -90,13 +32,13 @@ public type FacebookConnector object {
 # only, for users post and instantly published posts this value is always true). Note that this value is
 # always false
 public type Post record {
-    string id;
-    string message;
-    string createdTime;
-    string updatedTime;
-    string postType;
-    Profile fromObject;
-    boolean isPublished;
+    string id = "";
+    string message = "";
+    string createdTime = "";
+    string updatedTime = "";
+    string postType = "";
+    Profile fromObject = {};
+    boolean isPublished = false;
 };
 
 # The profile object is used within the Graph API to refer to the generic type that includes all of these
@@ -104,36 +46,36 @@ public type Post record {
 # + id - The object ID
 # + name - The object name
 public type Profile record {
-    string id;
-    string name;
+    string id = "";
+    string name = "";
 };
 
 # Friend list object.
 # + data - A list of User nodes
 # + summary - Aggregated information about the edge, such as counts
 public type FriendList record {
-    Data[] data;
-    Summary summary;
+    Data[] data = [];
+    Summary summary = {};
 };
 
 # A user node.
 # + id - The user ID
 # + name - The user name
 public type Data record {
-    string id;
-    string name;
+    string id = "";
+    string name = "";
 };
 
 # A Summary object.
 # + totalCount - Total number of objects on this edge
 public type Summary record {
-    string totalCount;
+    string totalCount = "";
 };
 
 # Contains page accesstoken object.
 # + data - AccessTokenData objects
 public type AccessTokens record {
-    AccessTokenData[] data;
+    AccessTokenData[] data = [];
 };
 
 # Contains page accesstoken details.
@@ -142,10 +84,10 @@ public type AccessTokens record {
 # + pageAccessToken - Page accessToken
 # + pageId - A page id
 public type AccessTokenData record {
-    string category;
-    string pageName;
-    string pageAccessToken;
-    string pageId;
+    string category = "";
+    string pageName = "";
+    string pageAccessToken = "";
+    string pageId = "";
 };
 
 # Event object.
@@ -173,32 +115,33 @@ public type AccessTokenData record {
 # + ticketing_terms_uri - The link to the terms of service of the ticket seller
 # + timezone - The timezone of the event
 # + type - The type of the event
+# + place - The place the event is scheduled to start
 public type Event record {
-    string id;
-    int? attending_count;
-    boolean? can_guests_invite;
-    string? category;
-    int? declined_count;
-    string? description;
-    boolean? discount_code_enabled;
-    string? end_time;
-    boolean? guest_list_enabled;
-    int? interested_count;
-    boolean? is_canceled;
-    boolean? is_draft;
-    boolean? is_page_owned;
-    int? maybe_count;
-    string name;
-    int? noreply_count;
-    Place? place;
-    string? scheduled_publish_time;
-    string start_time;
-    string? ticket_uri;
-    string? ticket_uri_start_sales_time;
-    string? ticketing_privacy_uri;
-    string? ticketing_terms_uri;
-    string? timezone;
-    string? ^"type";
+    string id = "";
+    int? attending_count = 0;
+    boolean? can_guests_invite = false;
+    string? category = "";
+    int? declined_count = 0;
+    string? description = "";
+    boolean? discount_code_enabled = false;
+    string? end_time = "";
+    boolean? guest_list_enabled = false;
+    int? interested_count = 0;
+    boolean? is_canceled = false;
+    boolean? is_draft = false;
+    boolean? is_page_owned = false;
+    int? maybe_count =0;
+    string name = "";
+    int? noreply_count = 0;
+    Place? place = {};
+    string? scheduled_publish_time = "";
+    string start_time = "";
+    string? ticket_uri = "";
+    string? ticket_uri_start_sales_time = "";
+    string? ticketing_privacy_uri = "";
+    string? ticketing_terms_uri = "";
+    string? timezone = "";
+    string? ^"type" = "";
 };
 
 # Contains Place details.
@@ -206,7 +149,7 @@ public type Event record {
 # + name - The name of the place
 # + overall_rating - The overall rating of the place
 public type Place record {
-    string? id;
-    string name;
-    float? overall_rating;
+    string? id ="";
+    string name = "";
+    float? overall_rating = 0.0;
 };
