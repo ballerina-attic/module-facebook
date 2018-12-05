@@ -37,7 +37,7 @@ function testGetPageAccessTokens() {
     io:println("-----------------Test case for GetPageAccessTokens method------------------");
     var response = facebookclient->getPageAccessTokens("me");
     if (response is AccessTokens) {
-        accessTokenList = response;
+        accessTokenList = untaint response;
     } else {
         test:assertFail(msg = <string>response.detail().message);
     }
@@ -76,7 +76,7 @@ Client facebookPageclient = new(facebookPageConfig);
 function getpageToken() returns string {
     var response = facebookclient->getPageAccessTokens("me");
     if (response is AccessTokens) {
-        accessTokenList = response;
+        accessTokenList = untaint response;
     }
     string pageToken = accessTokenList.data[0].pageAccessToken;
     return pageToken;
@@ -84,7 +84,7 @@ function getpageToken() returns string {
 
 @test:Config
 function testCreatePost() {
-    var response = facebookPageclient->createPost("me","testBalMeassage","","");
+    var response = facebookPageclient->createPost("me","testBalMeassage3123","","");
     if (response is Post) {
         facebookPost = response;
     } else {
@@ -93,7 +93,9 @@ function testCreatePost() {
     test:assertNotEquals(facebookPost.id, null, msg = "Failed to create post");
 }
 
-@test:Config
+@test:Config {
+dependsOn:["testCreatePost"]
+}
 function testRetrievePost() {
     io:println("-----------------Test case for retrievePost method------------------");
     var response = facebookPageclient->retrievePost("252017912323485_280575056134437");
@@ -104,7 +106,9 @@ function testRetrievePost() {
     }
 }
 
-@test:Config
+@test:Config {
+dependsOn:["testRetrievePost"]
+}
 function testDeletePost() {
     io:println("-----------------Test case for deletePost method------------------");
     var response = facebookPageclient->deletePost(facebookPost.id);

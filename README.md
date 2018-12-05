@@ -12,7 +12,7 @@ The `wso2/facebook` module contains operations to create post, retrieve post, de
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.985.0                      |
+|  Ballerina Language             |   0.990.0                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
@@ -30,7 +30,7 @@ Instantiate the connector by giving authentication details in the HTTP client co
 
 You can now enter the credentials in the HTTP client config:
 ```ballerina
-facebook:Client facebookEP {
+facebook:FacebookConfiguration facebookConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
@@ -38,6 +38,9 @@ facebook:Client facebookEP {
         }
     }
 };
+
+facebook:Client facebookclient = new(facebookConfig);
+
 ```
 
 The `createPost` function creates a post for a user, page, event, or group.

@@ -31,7 +31,7 @@ function convertToPost(json jsonPost) returns Post {
 
 function convertToBoolean(json jsonVal) returns (boolean) {
     string stringVal = jsonVal.toString();
-    return boolean.create(stringVal);
+    return boolean.convert(stringVal);
 }
 
 function convertToFriendList(json jsonFriend) returns FriendList {
@@ -39,14 +39,14 @@ function convertToFriendList(json jsonFriend) returns FriendList {
     Summary summary = {};
     summary.totalCount = jsonFriend.summary.total_count != null ? jsonFriend.summary.total_count.toString() : "";
     friendList.summary = summary;
-    friendList.data = convertToDatas(jsonFriend.data);
+    friendList.data = convertToDatas(<json[]>jsonFriend.data);
     return friendList;
 }
 
-function convertToDatas(json jsonDatas) returns Data[] {
+function convertToDatas(json[] jsonDatas) returns Data[] {
     Data[] dataArray = [];
     int i = 0;
-    foreach jsonData in jsonDatas {
+    foreach json jsonData in jsonDatas {
         Data data = {};
         data.id = jsonData.id != null ? jsonData.id.toString() : "";
         data.name = jsonData.name != null ? jsonData.name.toString() : "";
@@ -58,14 +58,14 @@ function convertToDatas(json jsonDatas) returns Data[] {
 
 function convertToAccessTokens(json jsonToken) returns AccessTokens {
     AccessTokens accessTokens = {};
-    accessTokens.data = convertToAccessTokenData(jsonToken.data);
+    accessTokens.data = convertToAccessTokenData(<json[]>jsonToken.data);
     return accessTokens;
 }
 
-function convertToAccessTokenData(json jsonData) returns AccessTokenData[] {
+function convertToAccessTokenData(json[] jsonData) returns AccessTokenData[] {
     AccessTokenData[] tokenData = [];
     int i = 0;
-    foreach data in jsonData {
+    foreach json data in jsonData {
         AccessTokenData accessTokenData = {};
         accessTokenData.category = data.category != null ? data.category.toString() : "";
         accessTokenData.pageAccessToken = data.access_token != null ? data.access_token.toString() : "";

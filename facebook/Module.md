@@ -11,7 +11,7 @@ The `wso2/facebook` module contains operations to create post, retrieve post, de
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.985.0                      |
+|  Ballerina Language             |   0.990.0                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
@@ -41,7 +41,7 @@ Instantiate the connector by giving authentication details in the HTTP client co
 
     For this enter user token in the following HTTP client config to use `getPageAccessTokens(userId)`:
     ```ballerina
-    facebook:Client facebookEP {
+    facebook:FacebookConfiguration facebookConfig = {
         clientConfig:{
             auth:{
                 scheme: http:OAUTH2,
@@ -49,11 +49,13 @@ Instantiate the connector by giving authentication details in the HTTP client co
             }
         }
     };
+    
+    facebook:Client facebookclient = new(facebookConfig);
     ```
 
 You can now enter page token to publish a post in a facebook page in the HTTP client config:
 ```ballerina
-facebook:Client facebookEP {
+facebook:FacebookConfiguration facebookConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
@@ -61,6 +63,8 @@ facebook:Client facebookEP {
         }
     }
 };
+
+facebook:Client facebookclient = new(facebookConfig);
 ```
 
 The `createPost` function creates a post for a user, page, event, or group.
@@ -132,20 +136,25 @@ import ballerina/io;
 import wso2/facebook;
 import ballerina/config;
 
-function main(string... args) {
+public function main() {
     string userAccessToken = config:getAsString("ACCESS_TOKEN");
     string pageAccessToken = callMethodsWithUserToken(userAccessToken);
     callMethodsWithPageToken(pageAccessToken);
 }
 
-function callMethodsWithUserToken(string userAccessToken) returns string {
-    endpoint facebook:Client client {
-        clientConfig:{
-            auth:{
-                accessToken:userAccessToken
-            }
+facebook:FacebookConfiguration facebookConfig = {
+    clientConfig:{
+        auth:{
+            scheme: http:OAUTH2,
+            accessToken:accessToken
         }
-    };
+    }
+};
+
+facebook:Client facebookclient = new(facebookConfig);
+
+function callMethodsWithUserToken(string userAccessToken) returns string {
+    
     io:println("-----------------Calling to get page accessTokens details------------------");
     //Get page tokens
     var tokenResponse = client->getPageAccessTokens("me");
