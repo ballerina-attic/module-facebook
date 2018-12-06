@@ -94,7 +94,7 @@ function testCreatePost() {
 }
 
 @test:Config {
-dependsOn:["testCreatePost"]
+    dependsOn:["testCreatePost"]
 }
 function testRetrievePost() {
     io:println("-----------------Test case for retrievePost method------------------");
@@ -107,7 +107,7 @@ function testRetrievePost() {
 }
 
 @test:Config {
-dependsOn:["testRetrievePost"]
+    dependsOn:["testRetrievePost"]
 }
 function testDeletePost() {
     io:println("-----------------Test case for deletePost method------------------");

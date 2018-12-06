@@ -88,7 +88,7 @@ remote function Client.createPost(string id, string msg, string link, string pla
     if (httpResponse is http:Response) {
         int statusCode = httpResponse.statusCode;
         var facebookJSONResponse = httpResponse.getJsonPayload();
-        if(facebookJSONResponse is json) {
+        if  (facebookJSONResponse is json) {
             if (statusCode == http:OK_200) {
                 Post fbPost = convertToPost(facebookJSONResponse);
                 return fbPost;
@@ -115,7 +115,7 @@ remote function Client.retrievePost(string postId) returns Post|error {
     if (httpResponse is http:Response) {
         int statusCode = httpResponse.statusCode;
         var facebookJSONResponse = httpResponse.getJsonPayload();
-        if(facebookJSONResponse is json) {
+        if (facebookJSONResponse is json) {
             if (statusCode == http:OK_200) {
                 Post fbPost = convertToPost(facebookJSONResponse);
                 return fbPost;
@@ -142,7 +142,7 @@ remote function Client.deletePost(string postId) returns (boolean)|error {
     if (httpResponse is http:Response) {
         int statusCode = httpResponse.statusCode;
         var facebookJSONResponse = httpResponse.getJsonPayload();
-        if(facebookJSONResponse is json) {
+        if  (facebookJSONResponse is json) {
             if (statusCode == http:OK_200) {
                 return true;
             } else {
@@ -168,7 +168,7 @@ remote function Client.retrieveEventDetails(string eventId) returns Event|error 
     if (httpResponse is http:Response) {
     int statusCode = httpResponse.statusCode;
     var facebookJSONResponse = httpResponse.getJsonPayload();
-        if(facebookJSONResponse is json) {
+        if  (facebookJSONResponse is json) {
             if (statusCode == http:OK_200) {
                 if (Event.convert(facebookJSONResponse) is Event) {
                     return Event.convert(facebookJSONResponse);
@@ -200,7 +200,7 @@ remote function Client.getFriendListDetails(string userId) returns FriendList|er
     if (httpResponse is http:Response) {
     int statusCode = httpResponse.statusCode;
     var facebookJSONResponse = httpResponse.getJsonPayload();
-        if(facebookJSONResponse is json) {
+        if  (facebookJSONResponse is json) {
             if (statusCode == http:OK_200) {
                 FriendList friendList = convertToFriendList(facebookJSONResponse);
                 return friendList;
@@ -227,7 +227,7 @@ remote function Client.getPageAccessTokens(string userId) returns AccessTokens|e
     if (httpResponse is http:Response) {
         int statusCode = httpResponse.statusCode;
         var facebookJSONResponse = httpResponse.getJsonPayload();
-        if(facebookJSONResponse is json) {
+        if (facebookJSONResponse is json) {
             if (statusCode == http:OK_200) {
                 AccessTokens accessTokens = convertToAccessTokens(facebookJSONResponse);
                 return accessTokens;

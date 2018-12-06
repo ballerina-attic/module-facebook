@@ -177,10 +177,10 @@ function callMethodsWithUserToken(string userAccessToken) returns string {
     //Get Friends list details
     var friendsResponse = client->getFriendListDetails("me");
     if (friendsResponse is facebook:FriendList) {
-            io:println("Friends list: ");
-            io:println(friendsResponse.data);
-            io:println("Friends list count: ");
-            io:println(list.summary.totalCount);
+        io:println("Friends list: ");
+        io:println(friendsResponse.data);
+        io:println("Friends list count: ");
+        io:println(list.summary.totalCount);
     } else {
         io:println(e.message);
     }
@@ -199,9 +199,9 @@ function callMethodsWithPageToken(string pageAccessToken) {
     var createPostResponse = client->createPost("me","testBalMeassage","","");
     string postId;
     if (createPostResponse is facebook:Post) {
-            postId = createPostResponse.id;
-            io:println("Post Id: ");
-            io:println(createPostResponse);
+        postId = createPostResponse.id;
+        io:println("Post Id: ");
+        io:println(createPostResponse);
     } else {
        io:println(createPostResponse.detail().message);
     }
@@ -209,8 +209,8 @@ function callMethodsWithPageToken(string pageAccessToken) {
     io:println("-----------------Calling to retrieve fb post------------------");
     var retrievePostResponse = client->retrievePost(postId);
     if (retrievePostResponse is facebook:Post) {
-            io:println("Post Details: ");
-            io:println(retrievePostResponse);
+        io:println("Post Details: ");
+        io:println(retrievePostResponse);
     } else {
         io:println(retrievePostResponse.detail().message);
     }
