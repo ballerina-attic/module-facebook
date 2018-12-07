@@ -12,7 +12,7 @@ The `wso2/facebook` module contains operations to create post, retrieve post, de
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.983.0                      |
+|  Ballerina Language             |   0.990.0                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
@@ -30,13 +30,17 @@ Instantiate the connector by giving authentication details in the HTTP client co
 
 You can now enter the credentials in the HTTP client config:
 ```ballerina
-endpoint facebook:Client facebookEP {
+facebook:FacebookConfiguration facebookConfig = {
     clientConfig:{
         auth:{
+            scheme: http:OAUTH2,
             accessToken:accessToken
         }
     }
 };
+
+facebook:Client facebookclient = new(facebookConfig);
+
 ```
 
 The `createPost` function creates a post for a user, page, event, or group.
@@ -45,30 +49,36 @@ The `createPost` function creates a post for a user, page, event, or group.
 var response = facebookEP->createPost(id,message,link,place);
 ```
 
-The response from `createPost` is a `Post` object if the request was successful or a `error` on failure. The `match` operation can be used to handle the response if an error occurs.
+The response from `createPost` is a `Post` object if the request was successful or a `error` on failure.
 ```ballerina
-match response {
+if (response is Post) {
    //If successful, returns the Post object.
-   facebook:Post fbRes => io:println(fbRes);
+   response = response;
+   io:println(fbRes);
+} else {
    //Unsuccessful attempts return a error.
-   error err => io:println(err);
+   io:println(response);
 }
 ```
 
 The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success and `error` on failure.
 ```ballerina
-var fbRes = facebookEP.retrievePost(postId);
-match fbRes {
-    facebook:Post p => io:println(p);
-    error e => io:println(e);
+var response = facebookEP.retrievePost(postId);
+if (response is Post) {
+    p = response;
+    io:println(p);
+} else {
+    io:println(response);
 }
 ```
 
 The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success and `error` on failure.
 ```ballerina
-var fbRes = facebookEP.deletePost(postId);
-match fbRes {
-    boolean b => io:println(b);
-    error e => io:println(e);
+var response = facebookEP.deletePost(postId);
+if (response is boolean) {
+    b = response;
+    io:println(b);
+} else {
+    io:println(response);
 }
 ```
