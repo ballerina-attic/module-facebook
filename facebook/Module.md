@@ -75,7 +75,7 @@ var response = facebookEP->createPost(id,message,link,place);
 
 The response from `createPost` is a `Post` object if the request was successful or a `error` on failure. .
 ```ballerina
-if (response is Post) {
+if (response is facebook:Post) {
    //If successful, returns the Post object.
    response = response;
    io:println(fbRes);
@@ -88,7 +88,7 @@ if (response is Post) {
 The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success and `error` on failure.
 ```ballerina
 var response = facebookEP.retrievePost(postId);
-if (response is Post) {
+if (response is facebook:Post) {
     p = response;
     io:println(p);
 } else {
@@ -110,7 +110,7 @@ if (response is boolean) {
 The `getFriendListDetails` function used to get the User's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns the `FriendList` object on success and `error` on failure.
 ```ballerina
 var response = facebookEP.getFriendListDetails(userId);
-if (response is FriendList) {
+if (response is facebook:FriendList) {
     friendList = response; 
     io:println(friendList); 
 } else {
@@ -121,7 +121,7 @@ if (response is FriendList) {
 The `getPageAccessTokens` function used to get the page access tokens. The `userId` represents the ID of the user. It returns the `AccessTokens` object on success and `error` on failure.
 ```ballerina
 var response = facebookEP.getPageAccessTokens(userId);
-if (response is AccessTokens) {
+if (response is facebook:AccessTokens) {
     list = response; 
     io:println(accessTokenList); 
 } else {
