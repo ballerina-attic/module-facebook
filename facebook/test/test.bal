@@ -84,7 +84,7 @@ function getpageToken() returns string {
 
 @test:Config
 function testCreatePost() {
-    var response = facebookPageclient->createPost("me","testBalMeassage3123","","");
+    var response = facebookPageclient->createPost("me","testBalMeassage","","");
     if (response is Post) {
         facebookPost = response;
     } else {
