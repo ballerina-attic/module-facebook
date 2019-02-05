@@ -20,6 +20,7 @@ import ballerina/test;
 
 string accessToken = config:getAsString("ACCESS_TOKEN");
 AccessTokens accessTokenList = {};
+string retrivePostId = "";
 
 FacebookConfiguration facebookConfig = {
     clientConfig:{
@@ -87,6 +88,7 @@ function testCreatePost() {
     var response = facebookPageclient->createPost("me","testBalMeassage","","");
     if (response is Post) {
         facebookPost = response;
+        retrivePostId = facebookPost.id;
     } else {
         test:assertFail(msg = <string>response.detail().message);
     }
@@ -98,7 +100,7 @@ function testCreatePost() {
 }
 function testRetrievePost() {
     io:println("-----------------Test case for retrievePost method------------------");
-    var response = facebookPageclient->retrievePost("252017912323485_280575056134437");
+    var response = facebookPageclient->retrievePost(retrivePostId);
     if (response is Post) {
         test:assertNotEquals(response.id, null, msg = "Failed to retrieve the post");
     } else {

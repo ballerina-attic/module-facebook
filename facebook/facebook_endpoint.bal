@@ -67,14 +67,14 @@ public type Client client object {
     public remote function retrieveEventDetails(string eventId) returns Event|error;
 };
 
-function Client.init(FacebookConfiguration facebookconfig) {
+public function Client.init(FacebookConfiguration facebookconfig) {
     http:AuthConfig? authConfig = facebookconfig.clientConfig.auth;
     if (authConfig is http:AuthConfig) {
         authConfig.scheme = http:OAUTH2;
     }
 }
 
-remote function Client.createPost(string id, string msg, string link, string place) returns Post|error {
+public remote function Client.createPost(string id, string msg, string link, string place) returns Post|error {
     http:Request request = new;
     string facebookPath = VERSION + PATH_SEPARATOR + id + FEED_PATH;
     string uriParams;
@@ -106,7 +106,7 @@ remote function Client.createPost(string id, string msg, string link, string pla
     }
 }
 
-remote function Client.retrievePost(string postId) returns Post|error {
+public remote function Client.retrievePost(string postId) returns Post|error {
     http:Request request = new;
     string facebookPath = VERSION + PATH_SEPARATOR + postId + FIELDS;
     request.setHeader("Accept", "application/json");
@@ -133,7 +133,7 @@ remote function Client.retrievePost(string postId) returns Post|error {
     }
 }
 
-remote function Client.deletePost(string postId) returns (boolean)|error {
+public remote function Client.deletePost(string postId) returns (boolean)|error {
     http:Request request = new;
     string facebookPath = VERSION + PATH_SEPARATOR + postId;
     request.setHeader("Accept", "application/json");
@@ -159,7 +159,7 @@ remote function Client.deletePost(string postId) returns (boolean)|error {
     }
 }
 
-remote function Client.retrieveEventDetails(string eventId) returns Event|error {
+public remote function Client.retrieveEventDetails(string eventId) returns Event|error {
     http:Request request = new;
     string facebookPath = VERSION + PATH_SEPARATOR + eventId;
     request.setHeader("Accept", "application/json");
@@ -191,7 +191,7 @@ remote function Client.retrieveEventDetails(string eventId) returns Event|error 
     }
 }
 
-remote function Client.getFriendListDetails(string userId) returns FriendList|error {
+public remote function Client.getFriendListDetails(string userId) returns FriendList|error {
     http:Request request = new;
     string facebookPath = VERSION + PATH_SEPARATOR + userId + FRIENDS;
     request.setHeader("Accept", "application/json");
@@ -218,7 +218,7 @@ remote function Client.getFriendListDetails(string userId) returns FriendList|er
     }
 }
 
-remote function Client.getPageAccessTokens(string userId) returns AccessTokens|error {
+public remote function Client.getPageAccessTokens(string userId) returns AccessTokens|error {
     http:Request request = new;
     string facebookPath = VERSION + PATH_SEPARATOR + userId + ACCOUNTS;
     request.setHeader("Accept", "application/json");
