@@ -11,7 +11,7 @@ The `wso2/facebook` module contains operations to create post, retrieve post, de
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.990.0                      |
+|  Ballerina Language             |   0.990.3                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
