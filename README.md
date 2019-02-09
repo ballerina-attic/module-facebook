@@ -43,7 +43,7 @@ facebook:Client facebookClient = new(facebookConfig);
 
 ```
 
-The `createPost` function creates a post for a user, page, event, or group.
+The `createPost` remote function creates a post for a user, page, event, or group.
 ```ballerina
 //Create post.
 var response = facebookClient->createPost(id,message,link,place);
@@ -52,7 +52,7 @@ var response = facebookClient->createPost(id,message,link,place);
 The response from `createPost` is a `Post` object if the request is successful or an `error` if unsuccessful.
 ```ballerina
 if (response is facebook:Post) {
-   // If successful, print Post details.
+   // If successful, print the Post details.
    io:println("Post Details: ", response);
 } else {
    // If unsuccessful, print the error returned.
@@ -60,7 +60,7 @@ if (response is facebook:Post) {
 }
 ```
 
-The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success or an `error` if unsuccessful.
+The `retrievePost` remote function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success or an `error` if unsuccessful.
 ```ballerina
 var response = facebookEP.retrievePost(postId);
 if (response is facebook:Post) {
@@ -70,7 +70,7 @@ if (response is facebook:Post) {
 }
 ```
 
-The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success or an `error` if unsuccessful.
+The `deletePost` remote function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns deletion status on success or an `error` if an error occurred.
 ```ballerina
 var response = facebookEP.deletePost(postId);
 if (response is boolean) {

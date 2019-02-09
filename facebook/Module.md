@@ -67,7 +67,7 @@ facebook:FacebookConfiguration facebookConfig = {
 facebook:Client facebookclient = new(facebookConfig);
 ```
 
-The `createPost` function creates a post for a user, page, event, or group.
+The `createPost` remote function creates a post for a user, page, event, or group.
 ```ballerina
 // Create a post.
 var response = facebookEP->createPost(id,message,link,place);
@@ -76,7 +76,7 @@ var response = facebookEP->createPost(id,message,link,place);
 The response from `createPost` is a `Post` object if the request is successful or an `error` if unsuccessful.
 ```ballerina
 if (response is facebook:Post) {
-   // If successful, print Post details.
+   // If successful, print the Post details.
    io:println("Post Details: ", response);
 } else {
    // If unsuccessful, print the error returned.
@@ -84,7 +84,7 @@ if (response is facebook:Post) {
 }
 ```
 
-The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success or an `error` if unsuccessful.
+The `retrievePost` remote function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success or an `error` if unsuccessful.
 ```ballerina
 var response = facebookEP.retrievePost(postId);
 if (response is facebook:Post) {
@@ -94,7 +94,7 @@ if (response is facebook:Post) {
 }
 ```
 
-The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success or an `error` if unsuccessful.
+The `deletePost` remote function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns deletion status on success or an `error` if an error occurred.
 ```ballerina
 var response = facebookEP.deletePost(postId);
 if (response is boolean) {
@@ -104,7 +104,7 @@ if (response is boolean) {
 }
 ```
 
-The `getFriendListDetails` function used to get the User's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns the `FriendList` object on success or an `error` if unsuccessful.
+The `getFriendListDetails` remote function is used to get the user's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns a `FriendList` object on success or an `error` if unsuccessful.
 ```ballerina
 var response = facebookEP.getFriendListDetails(userId);
 if (response is facebook:FriendList) {
@@ -114,7 +114,7 @@ if (response is facebook:FriendList) {
 }
 ```
 
-The `getPageAccessTokens` function used to get the page access tokens. The `userId` represents the ID of the user. It returns the `AccessTokens` object on success or an `error` if unsuccessful.
+The `getPageAccessTokens` remote function is used to get the page access tokens. The `userId` represents the ID of the user. It returns an `AccessTokens` object on success or an `error` if unsuccessful.
 ```ballerina
 var response = facebookEP.getPageAccessTokens(userId);
 if (response is facebook:AccessTokens) {
@@ -127,25 +127,21 @@ if (response is facebook:AccessTokens) {
 ##### Example
 
 ```
-import ballerina/io;
-import ballerina/http;
-import wso2/facebook;
 import ballerina/config;
+import ballerina/http;
+import ballerina/io;
+import wso2/facebook;
 
 facebook:FacebookConfiguration facebookConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
-            accessToken: getUserAccessToken()
+            accessToken: config:getAsString("ACCESS_TOKEN")
         }
     }
 };
 
 facebook:Client facebookclient = new(facebookConfig);
-
-function getUserAccessToken() returns string {
-    return config:getAsString("ACCESS_TOKEN");
-}
 
 string pageAccessToken = "";
 public function main(string... args) {
