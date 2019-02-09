@@ -69,63 +69,58 @@ facebook:Client facebookclient = new(facebookConfig);
 
 The `createPost` function creates a post for a user, page, event, or group.
 ```ballerina
-//Create post.
+// Create a post.
 var response = facebookEP->createPost(id,message,link,place);
 ```
 
-The response from `createPost` is a `Post` object if the request was successful or a `error` on failure. .
+The response from `createPost` is a `Post` object if the request is successful or an `error` if unsuccessful.
 ```ballerina
 if (response is facebook:Post) {
-   //If successful, returns the Post object.
-   response = response;
-   io:println(fbRes);
+   // If successful, print Post details.
+   io:println("Post Details: ", response);
 } else {
-   //Unsuccessful attempts return a error.
-   io:println(response);
+   // If unsuccessful, print the error returned.
+   io:println("Error: ", response);
 }
 ```
 
-The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success and `error` on failure.
+The `retrievePost` function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success or an `error` if unsuccessful.
 ```ballerina
 var response = facebookEP.retrievePost(postId);
 if (response is facebook:Post) {
-    p = response;
-    io:println(p);
+    io:println("Post Details: ", response);
 } else {
-    io:println(response);
+    io:println("Error: ", response);
 }
 ```
 
-The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success and `error` on failure.
+The `deletePost` function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns the `True` object on success or an `error` if unsuccessful.
 ```ballerina
 var response = facebookEP.deletePost(postId);
 if (response is boolean) {
-    b = response;
-    io:println(b);
+    io:println("Status: ", response);
 } else {
-    io:println(response);
+    io:println("Error: ", response);
 }
 ```
 
-The `getFriendListDetails` function used to get the User's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns the `FriendList` object on success and `error` on failure.
+The `getFriendListDetails` function used to get the User's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns the `FriendList` object on success or an `error` if unsuccessful.
 ```ballerina
 var response = facebookEP.getFriendListDetails(userId);
 if (response is facebook:FriendList) {
-    friendList = response; 
-    io:println(friendList); 
+    io:println("Friend List: ", response);
 } else {
-     io:println(response);
+     io:println("Error: ", response);
 }
 ```
 
-The `getPageAccessTokens` function used to get the page access tokens. The `userId` represents the ID of the user. It returns the `AccessTokens` object on success and `error` on failure.
+The `getPageAccessTokens` function used to get the page access tokens. The `userId` represents the ID of the user. It returns the `AccessTokens` object on success or an `error` if unsuccessful.
 ```ballerina
 var response = facebookEP.getPageAccessTokens(userId);
 if (response is facebook:AccessTokens) {
-    list = response; 
-    io:println(accessTokenList); 
+    io:println("Page Access Tokens: ", response);
 } else {
-    io:println(response);
+    io:println("Error: ", response);
 }
 ```
 
@@ -133,95 +128,99 @@ if (response is facebook:AccessTokens) {
 
 ```
 import ballerina/io;
+import ballerina/http;
 import wso2/facebook;
 import ballerina/config;
-
-public function main() {
-    string userAccessToken = config:getAsString("ACCESS_TOKEN");
-    string pageAccessToken = callMethodsWithUserToken(userAccessToken);
-    callMethodsWithPageToken(pageAccessToken);
-}
 
 facebook:FacebookConfiguration facebookConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
-            accessToken:accessToken
+            accessToken: getUserAccessToken()
         }
     }
 };
 
 facebook:Client facebookclient = new(facebookConfig);
 
-function callMethodsWithUserToken(string userAccessToken) returns string {
-    
+function getUserAccessToken() returns string {
+    return config:getAsString("ACCESS_TOKEN");
+}
+
+string pageAccessToken = "";
+public function main(string... args) {
+    pageAccessToken = untaint callMethodsWithUserToken();
+    callMethodsWithPageToken();
+}
+
+function callMethodsWithUserToken() returns string {
     io:println("-----------------Calling to get page accessTokens details------------------");
     //Get page tokens
-    var tokenResponse = client->getPageAccessTokens("me");
-    //facebook:AccessTokens accessTokenList = {};
-    string pageToken;
+    var tokenResponse = facebookclient->getPageAccessTokens("me");
+    string pageToken = "";
 
     if (tokenResponse is facebook:AccessTokens) {
-            pageToken = tokenResponse.data[0].pageAccessToken;
-            io:println("Page token details: ");
-            io:println(tokenResponse.data);
-            io:println("Page Name: ");
-            io:println(tokenResponse.data[0].pageName);
-            io:println("Page token: ");
-            io:println(pageToken);
+        pageToken = tokenResponse.data[0].pageAccessToken;
+        io:println("Page token details: ", tokenResponse.data);
+        io:println("Page Name: ", tokenResponse.data[0].pageName);
+        io:println("Page token: ", pageToken);
     } else {
-        io:println(tokenResponse.detail().message);
+        io:println("Error: ", tokenResponse.detail().message);
     }
 
     io:println("-----------------Calling to get friends list details------------------");
     //Get Friends list details
-    var friendsResponse = client->getFriendListDetails("me");
+    var friendsResponse = facebookclient->getFriendListDetails("me");
     if (friendsResponse is facebook:FriendList) {
-        io:println("Friends list: ");
-        io:println(friendsResponse.data);
-        io:println("Friends list count: ");
-        io:println(list.summary.totalCount);
+        io:println("Friends list Details: ", friendsResponse.data);
+        io:println("Friends list count: ", friendsResponse.summary.totalCount);
     } else {
-        io:println(e.message);
+        io:println("Error: ", friendsResponse.detail().message);
     }
     return pageToken;
 }
 
-function callMethodsWithPageToken(string pageAccessToken) {
-    endpoint facebook:Client client {
-        clientConfig:{
-            auth:{
-                accessToken:pageAccessToken
-            }
+facebook:FacebookConfiguration facebookPageConfig = {
+    clientConfig:{
+        auth:{
+            scheme: http:OAUTH2,
+            accessToken: getpageToken()
         }
-    };
+    }
+};
+
+facebook:Client facebookPageclient = new(facebookPageConfig);
+
+function getpageToken() returns string {
+    return pageAccessToken;
+}
+
+function callMethodsWithPageToken() {
     io:println("-----------------Calling to create fb post------------------");
-    var createPostResponse = client->createPost("me","testBalMeassage","","");
-    string postId;
+    var createPostResponse = facebookPageclient->createPost("me","testBalMeassage","","");
+    string postId = "";
     if (createPostResponse is facebook:Post) {
-        postId = createPostResponse.id;
-        io:println("Post Id: ");
-        io:println(createPostResponse);
+        postId = untaint createPostResponse.id;
+        io:println("Post Details: ", createPostResponse);
+        io:println("Post Id: ", postId);
     } else {
-       io:println(createPostResponse.detail().message);
+        io:println("Error: ", createPostResponse.detail().message);
     }
 
     io:println("-----------------Calling to retrieve fb post------------------");
-    var retrievePostResponse = client->retrievePost(postId);
+    var retrievePostResponse = facebookPageclient->retrievePost(postId);
     if (retrievePostResponse is facebook:Post) {
-        io:println("Post Details: ");
-        io:println(retrievePostResponse);
+        io:println("Post Details: ", retrievePostResponse);
     } else {
-        io:println(retrievePostResponse.detail().message);
+        io:println("Error: ", retrievePostResponse.detail().message);
     }
 
     io:println("-----------------Calling to delete fb post------------------");
-    var deleteResponse = client->deletePost(postId);
+    var deleteResponse = facebookPageclient->deletePost(postId);
     if (deleteResponse is boolean) {
-        io:println(deleteResponse);
+        io:println("Deleted Status: ", deleteResponse);
     } else {
-        io:println(deleteResponse.detail().message);
+        io:println("Error: ", deleteResponse.detail().message);
     }
 }
-
 ```
