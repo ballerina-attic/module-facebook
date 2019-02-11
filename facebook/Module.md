@@ -50,7 +50,7 @@ Instantiate the connector by giving authentication details in the HTTP client co
         }
     };
     
-    facebook:Client facebookclient = new(facebookConfig);
+    facebook:Client facebookClient = new(facebookConfig);
     ```
 
 You can now enter page token to publish a post in a facebook page in the HTTP client config:
@@ -64,13 +64,13 @@ facebook:FacebookConfiguration facebookConfig = {
     }
 };
 
-facebook:Client facebookclient = new(facebookConfig);
+facebook:Client facebookClient = new(facebookConfig);
 ```
 
 The `createPost` remote function creates a post for a user, page, event, or group.
 ```ballerina
 // Create a post.
-var response = facebookEP->createPost(id,message,link,place);
+var response = facebookClient->createPost(id,message,link,place);
 ```
 
 The response from `createPost` is a `Post` object if the request is successful or an `error` if unsuccessful.
@@ -86,7 +86,7 @@ if (response is facebook:Post) {
 
 The `retrievePost` remote function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success or an `error` if unsuccessful.
 ```ballerina
-var response = facebookEP.retrievePost(postId);
+var response = facebookClient.retrievePost(postId);
 if (response is facebook:Post) {
     io:println("Post Details: ", response);
 } else {
@@ -96,7 +96,7 @@ if (response is facebook:Post) {
 
 The `deletePost` remote function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns deletion status on success or an `error` if an error occurred.
 ```ballerina
-var response = facebookEP.deletePost(postId);
+var response = facebookClient.deletePost(postId);
 if (response is boolean) {
     io:println("Status: ", response);
 } else {
@@ -106,7 +106,7 @@ if (response is boolean) {
 
 The `getFriendListDetails` remote function is used to get the user's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns a `FriendList` object on success or an `error` if unsuccessful.
 ```ballerina
-var response = facebookEP.getFriendListDetails(userId);
+var response = facebookClient.getFriendListDetails(userId);
 if (response is facebook:FriendList) {
     io:println("Friend List: ", response);
 } else {
@@ -116,7 +116,7 @@ if (response is facebook:FriendList) {
 
 The `getPageAccessTokens` remote function is used to get the page access tokens. The `userId` represents the ID of the user. It returns an `AccessTokens` object on success or an `error` if unsuccessful.
 ```ballerina
-var response = facebookEP.getPageAccessTokens(userId);
+var response = facebookClient.getPageAccessTokens(userId);
 if (response is facebook:AccessTokens) {
     io:println("Page Access Tokens: ", response);
 } else {
@@ -141,9 +141,10 @@ facebook:FacebookConfiguration facebookConfig = {
     }
 };
 
-facebook:Client facebookclient = new(facebookConfig);
+facebook:Client facebookClient = new(facebookConfig);
 
 string pageAccessToken = "";
+
 public function main(string... args) {
     pageAccessToken = untaint callMethodsWithUserToken();
     callMethodsWithPageToken();
@@ -152,7 +153,7 @@ public function main(string... args) {
 function callMethodsWithUserToken() returns string {
     io:println("-----------------Calling to get page accessTokens details------------------");
     //Get page tokens
-    var tokenResponse = facebookclient->getPageAccessTokens("me");
+    var tokenResponse = facebookClient->getPageAccessTokens("me");
     string pageToken = "";
 
     if (tokenResponse is facebook:AccessTokens) {
@@ -166,7 +167,7 @@ function callMethodsWithUserToken() returns string {
 
     io:println("-----------------Calling to get friends list details------------------");
     //Get Friends list details
-    var friendsResponse = facebookclient->getFriendListDetails("me");
+    var friendsResponse = facebookClient->getFriendListDetails("me");
     if (friendsResponse is facebook:FriendList) {
         io:println("Friends list Details: ", friendsResponse.data);
         io:println("Friends list count: ", friendsResponse.summary.totalCount);
@@ -185,7 +186,7 @@ facebook:FacebookConfiguration facebookPageConfig = {
     }
 };
 
-facebook:Client facebookPageclient = new(facebookPageConfig);
+facebook:Client facebookPageClient = new(facebookPageConfig);
 
 function getpageToken() returns string {
     return pageAccessToken;
@@ -193,7 +194,7 @@ function getpageToken() returns string {
 
 function callMethodsWithPageToken() {
     io:println("-----------------Calling to create fb post------------------");
-    var createPostResponse = facebookPageclient->createPost("me","testBalMeassage","","");
+    var createPostResponse = facebookPageClient->createPost("me", "testBalMeassage", "", "");
     string postId = "";
     if (createPostResponse is facebook:Post) {
         postId = untaint createPostResponse.id;
@@ -204,7 +205,7 @@ function callMethodsWithPageToken() {
     }
 
     io:println("-----------------Calling to retrieve fb post------------------");
-    var retrievePostResponse = facebookPageclient->retrievePost(postId);
+    var retrievePostResponse = facebookPageClient->retrievePost(postId);
     if (retrievePostResponse is facebook:Post) {
         io:println("Post Details: ", retrievePostResponse);
     } else {
@@ -212,7 +213,7 @@ function callMethodsWithPageToken() {
     }
 
     io:println("-----------------Calling to delete fb post------------------");
-    var deleteResponse = facebookPageclient->deletePost(postId);
+    var deleteResponse = facebookPageClient->deletePost(postId);
     if (deleteResponse is boolean) {
         io:println("Deleted Status: ", deleteResponse);
     } else {
