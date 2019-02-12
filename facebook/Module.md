@@ -86,7 +86,7 @@ if (response is facebook:Post) {
 
 The `retrievePost` remote function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success or an `error` if unsuccessful.
 ```ballerina
-var response = facebookClient.retrievePost(postId);
+var response = facebookClient->retrievePost(postId);
 if (response is facebook:Post) {
     io:println("Post Details: ", response);
 } else {
@@ -96,7 +96,7 @@ if (response is facebook:Post) {
 
 The `deletePost` remote function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns deletion status on success or an `error` if an error occurred.
 ```ballerina
-var response = facebookClient.deletePost(postId);
+var response = facebookClient->deletePost(postId);
 if (response is boolean) {
     io:println("Status: ", response);
 } else {
@@ -106,7 +106,7 @@ if (response is boolean) {
 
 The `getFriendListDetails` remote function is used to get the user's friends who have installed the app making the query. The `userId` represents the ID of the user. It returns a `FriendList` object on success or an `error` if unsuccessful.
 ```ballerina
-var response = facebookClient.getFriendListDetails(userId);
+var response = facebookClient->getFriendListDetails(userId);
 if (response is facebook:FriendList) {
     io:println("Friend List: ", response);
 } else {
@@ -116,7 +116,7 @@ if (response is facebook:FriendList) {
 
 The `getPageAccessTokens` remote function is used to get the page access tokens. The `userId` represents the ID of the user. It returns an `AccessTokens` object on success or an `error` if unsuccessful.
 ```ballerina
-var response = facebookClient.getPageAccessTokens(userId);
+var response = facebookClient->getPageAccessTokens(userId);
 if (response is facebook:AccessTokens) {
     io:println("Page Access Tokens: ", response);
 } else {

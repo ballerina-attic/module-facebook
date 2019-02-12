@@ -45,7 +45,7 @@ facebook:Client facebookClient = new(facebookConfig);
 
 The `createPost` remote function creates a post for a user, page, event, or group.
 ```ballerina
-//Create post.
+// Create a post.
 var response = facebookClient->createPost(id,message,link,place);
 ```
 
@@ -62,7 +62,7 @@ if (response is facebook:Post) {
 
 The `retrievePost` remote function retrieves the post specified by the ID. The `postId` represents the ID of the post to be retrieved. It returns the `Post` object on success or an `error` if unsuccessful.
 ```ballerina
-var response = facebookEP.retrievePost(postId);
+var response = facebookEP->retrievePost(postId);
 if (response is facebook:Post) {
     io:println("Post Details: ", response);
 } else {
@@ -72,7 +72,7 @@ if (response is facebook:Post) {
 
 The `deletePost` remote function deletes the post specified by the ID. The `postId` represents the ID of the post to be deleted. It returns deletion status on success or an `error` if an error occurred.
 ```ballerina
-var response = facebookEP.deletePost(postId);
+var response = facebookEP->deletePost(postId);
 if (response is boolean) {
     io:println("Status: ", response);
 } else {
