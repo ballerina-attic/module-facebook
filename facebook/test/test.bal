@@ -26,7 +26,12 @@ FacebookConfiguration facebookConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
-            accessToken:accessToken
+            config: {
+                grantType: http:DIRECT_TOKEN,
+                config: {
+                    accessToken: accessToken
+                }
+            }
         }
     }
 };
@@ -43,7 +48,7 @@ function testGetPageAccessTokens() {
         test:assertFail(msg = <string>response.detail().message);
     }
     //pageToken = accessTokenList.data[0].pageAccessToken;
-    test:assertNotEquals(accessTokenList.data, null, msg = "Failed to get page access tokens");
+    test:assertNotEquals(accessTokenList.data, (), msg = "Failed to get page access tokens");
 }
 
 @test:Config
@@ -56,8 +61,8 @@ function testGetFriendListDetails() {
     } else {
         test:assertFail(msg = <string>response.detail().message);
     }
-    test:assertNotEquals(friendList.data, null, msg = "Failed to get friend list");
-    test:assertNotEquals(friendList.summary.totalCount, null, msg = "Failed to get friend list");
+    test:assertNotEquals(friendList.data, (), msg = "Failed to get friend list");
+    test:assertNotEquals(friendList.summary.totalCount, (), msg = "Failed to get friend list");
 }
 
 Post facebookPost = {};
@@ -66,7 +71,12 @@ FacebookConfiguration facebookPageConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
-            accessToken: getpageToken()
+            config: {
+                grantType: http:DIRECT_TOKEN,
+                config: {
+                    accessToken: getpageToken()
+                }
+            }
         }
     }
 };
@@ -92,7 +102,7 @@ function testCreatePost() {
     } else {
         test:assertFail(msg = <string>response.detail().message);
     }
-    test:assertNotEquals(facebookPost.id, null, msg = "Failed to create post");
+    test:assertNotEquals(facebookPost.id, (), msg = "Failed to create post");
 }
 
 @test:Config {
@@ -102,7 +112,7 @@ function testRetrievePost() {
     io:println("-----------------Test case for retrievePost method------------------");
     var response = facebookPageclient->retrievePost(retrievePostId);
     if (response is Post) {
-        test:assertNotEquals(response.id, null, msg = "Failed to retrieve the post");
+        test:assertNotEquals(response.id, (), msg = "Failed to retrieve the post");
     } else {
         test:assertFail(msg = <string>response.detail().message);
     }

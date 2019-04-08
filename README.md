@@ -12,7 +12,7 @@ The `wso2/facebook` module contains operations to create post, retrieve post, de
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.990.3                      |
+|  Ballerina Language             |   0.991.0                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
@@ -34,7 +34,12 @@ facebook:FacebookConfiguration facebookConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
-            accessToken:accessToken
+            config: {
+                grantType: http:DIRECT_TOKEN,
+                config: {
+                    accessToken: accessToken
+                }
+            }
         }
     }
 };

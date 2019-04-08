@@ -11,7 +11,7 @@ The `wso2/facebook` module contains operations to create post, retrieve post, de
 
 |                                 |       Version                  |
 |  :---------------------------:  |  :---------------------------: |
-|  Ballerina Language             |   0.990.3                      |
+|  Ballerina Language             |   0.991.0                      |
 |  Facebook API                   |   v3.1                        |
 
 ## Sample
@@ -45,7 +45,12 @@ Instantiate the connector by giving authentication details in the HTTP client co
         clientConfig:{
             auth:{
                 scheme: http:OAUTH2,
-                accessToken:accessToken
+                config: {
+                    grantType: http:DIRECT_TOKEN,
+                    config: {
+                        accessToken: accessToken
+                    }
+                }
             }
         }
     };
@@ -59,7 +64,12 @@ facebook:FacebookConfiguration facebookConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
-            accessToken:accessToken
+            config: {
+                grantType: http:DIRECT_TOKEN,
+                config: {
+                    accessToken: accessToken
+                }
+            }
         }
     }
 };
@@ -136,7 +146,12 @@ facebook:FacebookConfiguration facebookConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
-            accessToken: config:getAsString("ACCESS_TOKEN")
+            config: {
+                grantType: http:DIRECT_TOKEN,
+                config: {
+                    accessToken: config:getAsString("ACCESS_TOKEN")
+                }
+            }
         }
     }
 };
@@ -181,7 +196,12 @@ facebook:FacebookConfiguration facebookPageConfig = {
     clientConfig:{
         auth:{
             scheme: http:OAUTH2,
-            accessToken: getpageToken()
+            config: {
+                grantType: http:DIRECT_TOKEN,
+                config: {
+                    accessToken: getpageToken()
+                }
+            }
         }
     }
 };
