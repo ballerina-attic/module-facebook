@@ -6,7 +6,7 @@ The Facebook connector allows you to create post, retrieve post, delete post, ge
 
 | Ballerina Language Version  | Facebook API Version |
 | ----------------------------| ---------------------|
-|  0.990.3                    |   v3.1               |
+|  0.991.0                    |   v3.1               |
 
 
 ## Running Samples
