@@ -16,9 +16,9 @@
 
 # FacebookConfiguration is used to set up the Facebook configuration. In order to use this Connector, you need
 # to provide the valid access token.
-# + clientConfig - The HTTP client congiguration
+# + accessToken - The Facebook access token
 public type FacebookConfiguration record {
-    http:ClientEndpointConfig clientConfig = {};
+    string accessToken;
 };
 
 # Post object.
@@ -141,7 +141,7 @@ public type Event record {
     string? ticketing_privacy_uri = "";
     string? ticketing_terms_uri = "";
     string? timezone = "";
-    string? ^"type" = "";
+    string? 'type = "";
 };
 
 # Contains Place details.

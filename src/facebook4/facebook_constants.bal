@@ -16,11 +16,11 @@
 
 //API urls
 final string BASE_URL = "https://graph.facebook.com";
-final string VERSION = "/v3.1";
+final string VERSION = "/v4.0";
 final string FEED = "/feed";
 final string FRIENDS = "/friends";
 final string ACCOUNTS = "/accounts";
-final string FIELDS = "?fields=from,created_time,is_published,message,updated_time,type";
+final string FIELDS = "?fields=from,created_time,is_published,message,updated_time";
 final string VALUE_INPUT_OPTION = "valueInputOption=RAW";
 final string BATCH_UPDATE_REQUEST = ":batchUpdate";
 
@@ -35,6 +35,7 @@ final string FEED_PATH = "/feed";
 final string MESSAGE = "&message=";
 final string LINK = "&link=";
 final string PLACE = "&place=";
+final string PAGE_ACCESS_TOKEN = "&access_token=";
 
 // Error Codes
 final string FACEBOOK_ERROR_CODE = "(wso2/facebook)FacebookError";

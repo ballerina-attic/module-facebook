@@ -18,40 +18,30 @@ import ballerina/config;
 import ballerina/io;
 import ballerina/test;
 
-string accessToken = config:getAsString("ACCESS_TOKEN");
+string token = config:getAsString("ACCESS_TOKEN");
 AccessTokens accessTokenList = {};
 string retrievePostId = "";
 
 FacebookConfiguration facebookConfig = {
-    clientConfig:{
-        auth:{
-            scheme: http:OAUTH2,
-            config: {
-                grantType: http:DIRECT_TOKEN,
-                config: {
-                    accessToken: accessToken
-                }
-            }
-        }
-    }
+    accessToken : token
 };
 
-Client facebookclient = new(facebookConfig);
+FacebookClient facebookclient = new(facebookConfig);
 
-@test:Config
+@test:Config{}
 function testGetPageAccessTokens() {
     io:println("-----------------Test case for GetPageAccessTokens method------------------");
     var response = facebookclient->getPageAccessTokens("me");
     if (response is AccessTokens) {
-        accessTokenList = untaint response;
+        accessTokenList = response;
     } else {
-        test:assertFail(msg = <string>response.detail().message);
+        test:assertFail(msg = <string>response.detail()?.message);
     }
     //pageToken = accessTokenList.data[0].pageAccessToken;
     test:assertNotEquals(accessTokenList.data, (), msg = "Failed to get page access tokens");
 }
 
-@test:Config
+@test:Config{}
 function testGetFriendListDetails() {
     io:println("-----------------Test case for GetFriendListDetails method------------------");
     FriendList friendList = {};
@@ -59,48 +49,32 @@ function testGetFriendListDetails() {
     if (response is FriendList) {
         friendList = response;
     } else {
-        test:assertFail(msg = <string>response.detail().message);
+        test:assertFail(msg = <string>response.detail()?.message);
     }
     test:assertNotEquals(friendList.data, (), msg = "Failed to get friend list");
     test:assertNotEquals(friendList.summary.totalCount, (), msg = "Failed to get friend list");
 }
 
+
 Post facebookPost = {};
 
-FacebookConfiguration facebookPageConfig = {
-    clientConfig:{
-        auth:{
-            scheme: http:OAUTH2,
-            config: {
-                grantType: http:DIRECT_TOKEN,
-                config: {
-                    accessToken: getpageToken()
-                }
-            }
-        }
-    }
-};
-
-Client facebookPageclient = new(facebookPageConfig);
-
-@test:Config
 function getpageToken() returns string {
     var response = facebookclient->getPageAccessTokens("me");
     if (response is AccessTokens) {
-        accessTokenList = untaint response;
+        accessTokenList = response;
     }
     string pageToken = accessTokenList.data[0].pageAccessToken;
     return pageToken;
 }
 
-@test:Config
+@test:Config{}
 function testCreatePost() {
-    var response = facebookPageclient->createPost("me","testBalMeassage","","");
+    var response = facebookclient->createPost("me","testBalMeassage","","", getpageToken());
     if (response is Post) {
         facebookPost = response;
         retrievePostId = facebookPost.id;
     } else {
-        test:assertFail(msg = <string>response.detail().message);
+        test:assertFail(msg = <string>response.detail()?.message);
     }
     test:assertNotEquals(facebookPost.id, (), msg = "Failed to create post");
 }
@@ -110,11 +84,11 @@ function testCreatePost() {
 }
 function testRetrievePost() {
     io:println("-----------------Test case for retrievePost method------------------");
-    var response = facebookPageclient->retrievePost(retrievePostId);
+    var response = facebookclient->retrievePost(retrievePostId);
     if (response is Post) {
         test:assertNotEquals(response.id, (), msg = "Failed to retrieve the post");
     } else {
-        test:assertFail(msg = <string>response.detail().message);
+        test:assertFail(msg = <string>response.detail()?.message);
     }
 }
 
@@ -123,10 +97,10 @@ function testRetrievePost() {
 }
 function testDeletePost() {
     io:println("-----------------Test case for deletePost method------------------");
-    var response = facebookPageclient->deletePost(facebookPost.id);
+    var response = facebookclient->deletePost(facebookPost.id, getpageToken());
     if (response is boolean) {
         test:assertTrue(response, msg = "Failed to delete the post!");
     } else {
-        test:assertFail(msg = <string>response.detail().message);
+        test:assertFail(msg = <string>response.detail()?.message);
     }
 }

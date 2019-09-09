@@ -21,17 +21,27 @@ function convertToPost(json jsonPost) returns Post {
     post.message = jsonPost.message != null ? jsonPost.message.toString() : "";
     post.createdTime = jsonPost.created_time != null ? jsonPost.created_time.toString() : "";
     post.updatedTime = jsonPost.updated_time != null ? jsonPost.updated_time.toString() : "";
-    post.postType = jsonPost["type"] != null ? jsonPost["type"].toString() : "";
-    post.isPublished = jsonPost.is_published != null ? convertToBoolean(jsonPost.is_published) : false;
-    profile.id = jsonPost["from"].id != null ? jsonPost["from"].id.toString() : "";
-    profile.name = jsonPost["from"].name != null ? jsonPost["from"].name.toString() : "";
+    post.postType = jsonPost.'type != null ? jsonPost.'type.toString() : "";
+    var isPublished = jsonPost.is_published;
+    if (isPublished is json){
+        post.isPublished = convertToBoolean(isPublished);
+    } else {
+        post.isPublished = false;
+    }
+    profile.id = jsonPost.'from.id != null ? jsonPost.'from.id.toString() : "";
+    profile.name = jsonPost.'from.name != null ? jsonPost.'from.name.toString() : "";
     post.fromObject = profile;
     return post;
 }
 
 function convertToBoolean(json jsonVal) returns (boolean) {
     string stringVal = jsonVal.toString();
-    return boolean.convert(stringVal);
+    var stringToBoolean = boolean.constructFrom(stringVal);
+    if (stringToBoolean is boolean) {
+        return stringToBoolean;
+    } else {
+        return false;
+    }
 }
 
 function convertToFriendList(json jsonFriend) returns FriendList {
